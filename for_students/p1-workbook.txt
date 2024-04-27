@@ -1,0 +1,22 @@
+Wisc ID: 9082224164
+GitHub ID: rwlynch2
+GitHub link: https://github.com/rwlynch2/Cs559-Spring24-P3-rwlynch2
+
+[X] correct P3 Canvas Assignment submission [none]: 
+[X] clear explanations in p1-workbook.txt [none]: 
+[X] correct P3G Canvas Assignment submission on time [none]: 
+[X] there are (at least) 7 block types (L block, T block, etc.) 
+[X] the blocks repeatedly spawn at the top of the board one at a time and then fall, with each successive block only spawning sometime after the previous one has landed on the ground (with the "ground" being either the bottom of the playing area or a previously-placed block)
+[X] The interface still works (the track can be moved and the run slider works, even while the train is in motion) [tr-01-01]: 
+[X] the order in which the block types spawn are random and something like grab-bag randomization is used to ensure that the randomization will never cause the player to have the same block type spawn more than once or twice in a row
+[X] the speed at which the blocks fall increases a reasonable amount as the game progresses
+[X] the blocks can be controlled by the player (moved/rotated left and right) as they fall
+[X] completing (filling in) a horizontal line of the game board removes that line and causes all blocks above it to fall to fill it
+[X] the game ends when the blocks stack high enough to reach the top of the playing area
+[X] the game board is easy to read (each block type has its own color separate from the background color and the game-area-border color)
+[X] the user can push the down button to make the current block fall faster (the speed increase stops when the user stops pressing the down button) (1 advanced point)
+[X] a score is displayed and increased whenever a row of the game area is filled (1 advanced point)
+[ ] sometimes a block spawns with a square containing a power up. When a square containing a power up is removed from the game board (either by matching a line of the game area or by another power up removing it) the power up does one of the following  (1 advanced point for each one of the following power ups implemented):
+
+
+
