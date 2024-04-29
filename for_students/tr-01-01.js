@@ -164,7 +164,7 @@ function updateInterval() {
 }
 function checkEndGame() {
   // Check if any blocks in the top row are fixed
-  return fixedBlocks[0].some(block => block === 1);
+  return fixedBlocks[0].some(block => block.fixed === 1);
 }
 function gameLoop() {
   if (checkEndGame()) {
@@ -186,6 +186,7 @@ function gameLoop() {
         drawGrid(); // Draw the grid
         currentTetromino.render(); // Render the current Tetromino
         renderFixedBlocks(); // Render fixed blocks
+        drawGrid(); // Draw the grid
         renderScore(); // Render the score on the canvas
 
         // Increment elapsed time and update interval if needed
@@ -201,11 +202,12 @@ gameLoop(); // Start the game loop
 
 // Rendering fixed blocks on the grid
 function renderFixedBlocks() {
-  context.fillStyle = 'gray'; // Color for fixed blocks
+   // Color for fixed blocks
 
   fixedBlocks.forEach((row, rowIndex) => {
       row.forEach((block, colIndex) => {
-          if (block === 1) {
+        context.fillStyle = block.color;
+          if (block.fixed === 1) {
               const x = colIndex * BLOCK_SIZE;
               const y = rowIndex * BLOCK_SIZE;
               context.fillRect(x, y, BLOCK_SIZE, BLOCK_SIZE); // Draw fixed blocks in gray
@@ -222,22 +224,26 @@ gameLoop(); // Start the game loop
 
 // Key event listener for moving the Tetromino
 window.addEventListener("keydown", (e) => {
+  e.preventDefault();  
   currentTetromino.clear();
   
   if (e.key === "ArrowLeft") {
       currentTetromino.moveLeft();
       if (checkCollision(currentTetromino)) {
           currentTetromino.moveRight(); // Undo if collision
+      
       }
   } else if (e.key === "ArrowRight") {
       currentTetromino.moveRight();
       if (checkCollision(currentTetromino)) {
           currentTetromino.moveLeft(); // Undo if collision
+   
       }
   } else if (e.key === "ArrowDown") {
       currentTetromino.moveDown();
       if (checkCollision(currentTetromino)) {
           currentTetromino.y -= 1; // Undo if collision
+          
       }
   } else if (e.key === "ArrowUp") {
       currentTetromino.rotate();
@@ -248,6 +254,7 @@ window.addEventListener("keydown", (e) => {
       }
   }
   currentTetromino.render(); // Re-render after keypress
+  drawGrid();
 });
 
 // Helper functions to fix Tetrominoes and clear lines
@@ -263,7 +270,7 @@ function checkCollision(tetromino) {
                   x < 0 || // Left boundary check
                   x >= COLS || // Right boundary check
                   y >= ROWS || // Bottom boundary check
-                  (y < ROWS && fixedBlocks[y][x] === 1) // Fixed block collision
+                  (y < ROWS && fixedBlocks[y][x].fixed === 1) // Fixed block collision
               );
           }
       });
@@ -277,7 +284,8 @@ function fixTetromino(tetromino) {
               const x = tetromino.x + colIndex;
               const y = tetromino.y + rowIndex;
               if (x >= 0 && x < COLS && y < ROWS) {
-                  fixedBlocks[y][x] = 1;
+                  fixedBlocks[y][x] = {fixed: 1,
+                     color: tetromino.color};
               }
           }
       });
@@ -286,7 +294,7 @@ function fixTetromino(tetromino) {
 
 function clearLines() {
   for (let y = 0; y < ROWS; y++) {
-      if (fixedBlocks[y].every(val => val === 1)) {
+      if (fixedBlocks[y].every(block => block.fixed === 1)) {
           // Remove the completed line and shift everything down
           fixedBlocks.splice(y, 1); // Remove the filled row
           fixedBlocks.unshift(Array(COLS).fill(0)); // Add an empty row at the top
